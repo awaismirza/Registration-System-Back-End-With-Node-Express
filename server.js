@@ -22,6 +22,7 @@ app.get('/posts', (req, res) =>{
 
 app.post('/register', (req, res) =>{
     let userData = req.body;
+    console.log(userData);
     let user = new User(userData);
 
     user.save((err, result) =>{
