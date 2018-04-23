@@ -33,6 +33,20 @@ app.get('/users', async(req, res) =>{
     
 });
 
+app.get('/profile/:id', async(req, res) =>{
+    try {
+        let user = await User.findById(req.params.id, '-password -__v');
+        res.send(user);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+    
+    
+});
+
+
+
 app.post('/register', (req, res) =>{
     let userData = req.body;
     console.log(userData);
