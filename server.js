@@ -21,6 +21,18 @@ app.get('/posts', (req, res) =>{
     res.send(posts);
 });
 
+app.get('/users', async(req, res) =>{
+    try {
+        let users = await User.find({}, '-password -__v');
+        res.send(users);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+    
+    
+});
+
 app.post('/register', (req, res) =>{
     let userData = req.body;
     console.log(userData);
