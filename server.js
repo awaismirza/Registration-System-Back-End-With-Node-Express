@@ -4,6 +4,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
+var bcrypt = require('bcrypt-nodejs');
+
+
 
 const port = 3000;
 
@@ -45,8 +48,6 @@ app.get('/profile/:id', async(req, res) =>{
     
 });
 
-
-
 app.post('/register', (req, res) =>{
     let userData = req.body;
     console.log(userData);
@@ -69,15 +70,17 @@ app.post('/login', async (req, res) =>{
         return res.status(401).send({message: 'Email or Password Invalid'})
     }
 
-    if(userData.password != user.password){
-        return res.status(401).send({message: 'Email or Password Invalid'})
-    }
-
+    bcrypt.compare(userData.password, user.password, (err, isMatch) =>{
+        if(!isMatch){
+            return res.status(401).send({message: 'Email or Password Invalid'})
+        }
+        
     let payload = {}
 
-    let token = jwt.encode(payload, '123456')
+    let token = jwt.encode(payload, '123')
 
     res.status(200).send({token})
+    })
 });
 
 
