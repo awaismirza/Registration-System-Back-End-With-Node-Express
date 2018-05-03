@@ -9,11 +9,15 @@ router.post('/register', (req, res) =>{
         console.log(userData);
         let user = new User(userData);
     
-        user.save((err, result) =>{
+        user.save((err, newUser) =>{
             if(err){
-                console.log("Having trouble Adding User");
+                return res.status(401).send({message: 'Error Registering the User'})
             }else {
-                res.sendStatus(200);
+                let payload = { sub: newUser._id }
+    
+                let token = jwt.encode(payload, '123')
+            
+                res.status(200).send({token})
             }
         })
     })
@@ -31,12 +35,11 @@ router.post('/login', async (req, res) =>{
                 return res.status(401).send({message: 'Email or Password Invalid'})
             }
             
-        let payload = {}
+        let payload = { sub: user._id }
     
         let token = jwt.encode(payload, '123')
     
         res.status(200).send({token})
         })
     })
-
     module.exports = router
