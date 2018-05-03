@@ -7,7 +7,7 @@ var jwt = require('jwt-simple');
 var auth = require('./auth');
 
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 var User = require('./models/user.js');
 var Post = require('./models/post.js');
